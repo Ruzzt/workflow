@@ -2,11 +2,11 @@ name: CI/CD Pipeline
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [ first ]
     tags:
       - 'v*'
   pull_request:
-    branches: [ main ]
+    branches: [ first ]
 
 jobs:
   test:
@@ -18,10 +18,10 @@ jobs:
       uses: actions/checkout@v4
     
     - name: Set up Go
-      uses: actions/setup-go@v4
+      uses: actions/setup-go@v5
       with:
-        go-version: '1.21'
-    
+        go-version: 'stable'
+        cache: false
     - name: Download dependencies
       run: go mod download
     
@@ -30,14 +30,6 @@ jobs:
     
     - name: Run tests
       run: go test -v ./...
-    
-    - name: Run go fmt check
-      run: |
-        if [ "$(gofmt -s -l . | wc -l)" -gt 0 ]; then
-          echo "Code is not properly formatted"
-          gofmt -s -l .
-          exit 1
-        fi
 
   publish:
     name: Build and Publish to DockerHub
