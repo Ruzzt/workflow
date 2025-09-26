@@ -19,7 +19,7 @@ RUN apk --no-cache add ca-certificates sqlite
 
 WORKDIR /app
 
-COPY --from=builder /app/main .
+COPY --from=builder /app/first .
 
-CMD ["./main"]
+CMD ["./first"]
 
